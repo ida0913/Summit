@@ -6,6 +6,14 @@ public class Time{
     public static final long NS_IN_MS = 1000000;
     public static final long NS_IN_S = 1000000000;
 
+    public static long timeMs(){
+        return System.currentTimeMillis();
+    }
+
+    public static long timeNs(){
+        return System.nanoTime();
+    }
+
     public static void nanoDelay(long nanos)
     {
         if(nanos < 0) return;

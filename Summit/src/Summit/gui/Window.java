@@ -11,6 +11,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferStrategy;
 import java.util.Stack;
+import java.awt.RenderingHints;
 
 import javax.swing.JFrame;
 import javax.swing.WindowConstants;
@@ -35,6 +36,8 @@ public class Window {
     private Stack<Menu> menus;
     private WindowState state;
 
+    private GameWorld world;
+
     private BufferStrategy buffer;
 
     private Thread graphicsThread;
@@ -56,8 +59,12 @@ public class Window {
                     Graphics2D g = null;
                     do {
                         try{
-                            g = (Graphics2D) buffer.getDrawGraphics();
-                            
+                            g = (Graphics2D)buffer.getDrawGraphics();
+
+                            g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+                            g.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
+                            // g.setRenderingHint(RenderingHints.);
+
                             {
                                 renderFrame(g);
                             }
@@ -137,6 +144,14 @@ public class Window {
     private void renderFrame(Graphics2D g){
         g.setColor(bg);
         g.fillRect(0, 0, width, height);
+
+        PaintEvent pe = new PaintEvent(renderer, Time.timeMs());
+
+        world.paint(pe);
+
+        for(Menu menu: menus){
+            menu.paint(pe);
+        }
     }
 
     public void setState(WindowState newState){
