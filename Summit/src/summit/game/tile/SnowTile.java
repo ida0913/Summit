@@ -13,13 +13,13 @@ public class SnowTile extends Tile{
 
     @Override
     public void paint(PaintEvent e){
-
+        e.getRenderer().render(Sprites.SNOW_TILE, getX(), getY(), 0);
     }
 
     @Override
     public void click(GameMap map, MouseEvent e){
         if(map.getPlayer().inHand() instanceof ShovelTool.class){
-            
+
         }
     }
 
