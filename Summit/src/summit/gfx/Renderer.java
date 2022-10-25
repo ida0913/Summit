@@ -36,7 +36,6 @@ public class Renderer {
 
         Point2D.Float spritePos = toPixel(x, y, this.camera);
 
-
         int nx = Math.round(toPixel(x)-toPixel(rotation));
         int ny = Math.round(toPixel(y)-toPixel(rotation));
 
@@ -51,7 +50,6 @@ public class Renderer {
 
     /**
      * Camera is left in gamecoordinates
-     * 
      */
     public static Point2D.Float toPixel(float x, float y, Camera cam){
         float nx = (WIDTH/2)+(x*16F)-(cam.getX()*16F);
@@ -73,11 +71,19 @@ public class Renderer {
         return new Point2D.Float(nx, ny); 
     }
 
+    public static boolean onScreen(float x, float y, ){
+
+    }
+
     //------------------------------------------------------------------
     //getters and setters
     //------------------------------------------------------------------
     
     public void setCamera(Camera camera) {
         this.camera = camera;
+    }
+
+    public void getCamera() {
+        return this.camera;
     }
 }
