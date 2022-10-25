@@ -37,8 +37,8 @@ public class Renderer {
         Point2D.Float spritePos = toPixel(x, y, this.camera);
 
 
-        int nx = Math.round(toPixel(x)-toPixel(rotation));
-        int ny = Math.round(toPixel(y)-toPixel(rotation));
+        int nx = 1;//Math.round(toPixel(x)-toPixel(rotation));
+        int ny = 1;//Math.round(toPixel(y)-toPixel(rotation));
 
         rotation = ((int)rotation/90)*90;
 
