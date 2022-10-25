@@ -29,6 +29,10 @@ public class GameMap implements Paintable, GameUpdate{
 
     @Override
     public void paint(PaintEvent e) {
-
+        for(int i = 0; i < map.length; i++){
+            for(int j = 0; j < map.length; j++){
+                map[i][j].paint(e);
+            }
+        }
     }
 }
