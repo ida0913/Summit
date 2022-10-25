@@ -1,6 +1,7 @@
 package summit.gui.menu;
 
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 import java.util.List;
 
 import summit.game.GameMap;
@@ -14,28 +15,32 @@ public class Menu implements Paintable, Clickable{
     private List<MenuComponent> components;
     private Region region;
 
-    private float relWidth;
-    private float relHeight;
-    private float relX;
-    private float relY;
+    private final float REL_WIDTH;
+    private final float REL_HEIGHT;
+    private final float REL_X;
+    private final float REL_Y;
 
-    public Menu(float relWidth, float relHeight, float relX, float relY){
-        
-        this.relWidth = relWidth;
-        this.relHeight = relHeight;
-        this.relX = relX;
-        this.relY = relY;
+    public Menu(float relX, float relY, float relWidth, float relHeight){
+        this.components = new ArrayList<>();
+        region = new Region(relX, relY, relWidth, relHeight);
+
+        this.REL_WIDTH = relWidth;
+        this.REL_HEIGHT = relHeight;
+        this.REL_X = relX;
+        this.REL_Y = relY;
     }
 
     @Override
     public void click(GameMap map, MouseEvent e) {
-        // TODO Auto-generated method stub
-        
+        for(int i = 0; i < components.size(); i++){
+            if(components.get(i).getRegion().contains(e.getX(), e.getY())){
+                components.get(i).click(map, e);
+            }
+        }
     }
 
     @Override
     public void paint(PaintEvent e) {
-        // TODO Auto-generated method stub
         
     }
 }
