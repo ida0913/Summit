@@ -17,8 +17,10 @@ public class ClickEventHandler extends java.awt.Component implements MouseListen
     
     @Override
     public void mousePressed(MouseEvent e) {
-        float nx = Renderer.toTile(e.getX(), map.getCamera());
-        float ny = Renderer.toTile(e.getY(), map.getCamera());
+        java.awt.geom.Point2D.Float point = Renderer.toTile(e.getX(), e.getY(), map.getCamera());
+
+        float nx = point.getX();
+        float ny = point.getY();
 
         ((Clickable)map.getRegionAt(nx, ny)).click(map, e);
     }
