@@ -12,6 +12,7 @@ public class GameMap implements Paintable, GameUpdate{
     private String name;
 
     private Camera camera;
+    private Player player;
 
     public GameMap(String name) {
         map = new TileStack[256][256];
@@ -29,6 +30,18 @@ public class GameMap implements Paintable, GameUpdate{
 
     @Override
     public void paint(PaintEvent e) {
+        for(int i = 0; i < map.length; i++){
+            for(int j = 0; j < map.length; j++){
+                map[i][j].paint(e);
+            }
+        }
+    }
 
+    public Camera getCamera(){
+        return camera;
+    }
+
+    public void setCamera(Camera cam){
+        this.camera = cam;
     }
 }

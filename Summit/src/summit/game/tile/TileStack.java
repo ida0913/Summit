@@ -46,7 +46,12 @@ public class TileStack implements Clickable, Paintable, GameUpdate {
 
     @Override
     public void update(GameUpdateEvent e) {
+        for(int i = 0; i < tiles.size(); i++){
+            Tile t = tiles.get(i);
+            t.update(e);
+            if(t.isSetToDestroy()){
 
+            }
+        }
     }
-
 }
