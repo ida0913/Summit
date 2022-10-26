@@ -1,5 +1,7 @@
 package summit.game;
 
+import java.net.Socket;
+
 import summit.game.tile.TileStack;
 import summit.gfx.Camera;
 import summit.gfx.PaintEvent;
@@ -12,7 +14,7 @@ public class GameMap implements Paintable, GameUpdate{
     private String name;
 
     private Camera camera;
-    private Player player;
+    // private Player player;
 
     public GameMap(String name) {
         map = new TileStack[256][256];
@@ -37,6 +39,10 @@ public class GameMap implements Paintable, GameUpdate{
         }
     }
 
+    //--------------------------------------------------------------------
+    // getters and setters
+    //--------------------------------------------------------------------
+
     public Camera getCamera(){
         return camera;
     }
@@ -44,4 +50,12 @@ public class GameMap implements Paintable, GameUpdate{
     public void setCamera(Camera cam){
         this.camera = cam;
     }
+    
+    // public Player getPlayer() {
+    //     return this.player;
+    // }
+
+    // public void setPlayer(Player player) {
+    //     this.player = player;
+    // }
 }

@@ -6,8 +6,13 @@ public class Renderer {
     
     private int[][] frame;
 
-    private static final int WIDTH = 512;
-    private static final int HEIGHT = 288;
+    public static final int WIDTH = 512;
+    public static final int HEIGHT = 288;
+
+    public static final int FLIP_NONE = 0b0;
+    public static final int FLIP_X = 0b1;
+    public static final int FLIP_Y = 0b10;
+    public static final int ROTATE_90 = 0b100;
 
     private Camera camera;
 
@@ -25,28 +30,49 @@ public class Renderer {
     }
 
 
-    /** 
-     * coordinates are topleft gamespace coordinates. 
-     * rotation is rounded to nearest multiple of 90. 
-     * {@code sprite} is image data. 
-    */
-    public void render(int s, float x, float y, int rotation){
-        
+    /**
+     * USE THIS METHOD FOR GENERAL RENDERING (MENUS, DIALOGUE, ETC). COORDINATES ARE SCREEN COORDINATES
+     */
+    public void render(int s, float x, float y, int flip){
         int[][] sprite = BufferedSprites.getSprite(s);
+
+        int nx = (int)x-(sprite[0].length/2);
+        int ny = (int)y-(sprite.length/2);
+
+        if(flip == 0){
+            for(int yy = ny; yy < frame.length; yy++) {
+                for(int xx = nx; xx < frame[0].length; xx++) {
+                    frame[yy][xx] = sprite[yy-ny][xx-nx];
+                }
+            }
+        }
+        else if(flip == FLIP_X){
+
+        }
+        else if(flip == FLIP_Y){
+
+        }
+        else if(flip == (FLIP_X | FLIP_X)){
+
+        }
+    }
+
+    /** 
+     * USE THIS METHOD FOR RENDERING GAME STUFF (ANYTHING THAT IS POSITIONALLY BASED ON A CAMERA).
+     * COORDINATES ARE GAMESPACE COORDINATES.
+    */
+    public void renderGame(int s, float x, float y, int flip){
 
         Point2D.Float spritePos = toPixel(x, y, this.camera);
 
-        int nx = 1;//Math.round(toPixel(x)-toPixel(rotation));
-        int ny = 1;//Math.round(toPixel(y)-toPixel(rotation));
-
-        rotation = ((int)rotation/90)*90;
-
-        for(int yy = ny; yy < frame.length; yy++) {
-            for(int xx = nx; xx < frame[0].length; xx++) {
-                frame[yy][xx] = sprite[yy-ny][xx-nx];
-            }
-        }
+        this.render(s, spritePos.x, spritePos.y, flip);
     }
+
+
+
+    //--------------------------------------------------------------------
+    // utilities
+    //--------------------------------------------------------------------
 
     /**
      * Camera is left in gamecoordinates
@@ -71,8 +97,12 @@ public class Renderer {
         return new Point2D.Float(nx, ny); 
     }
 
-    public static boolean onScreen(float x, float y, ){
+    public static float toPixel(float n){
+        return n*16;
+    }
 
+    public static boolean onScreen(float x, float y, Camera cam){
+        return false;
     }
 
     //------------------------------------------------------------------
@@ -83,7 +113,7 @@ public class Renderer {
         this.camera = camera;
     }
 
-    public void getCamera() {
+    public Camera getCamera() {
         return this.camera;
     }
 }

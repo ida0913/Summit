@@ -7,6 +7,8 @@ import java.util.List;
 import summit.game.GameMap;
 import summit.gfx.PaintEvent;
 import summit.gfx.Paintable;
+import summit.gfx.Renderer;
+import summit.gfx.Sprite;
 import summit.gui.Clickable;
 import summit.util.Region;
 
@@ -21,13 +23,13 @@ public class Menu implements Paintable, Clickable{
     private final float REL_Y;
 
     public Menu(float relX, float relY, float relWidth, float relHeight){
-        this.components = new ArrayList<>();
-        region = new Region(relX, relY, relWidth, relHeight);
+        components = new ArrayList<>();
+        region = new Region(Renderer.WIDTH*relX, Renderer.HEIGHT*relY, Renderer.WIDTH*relWidth, Renderer.HEIGHT*relHeight);
 
-        this.REL_WIDTH = relWidth;
-        this.REL_HEIGHT = relHeight;
-        this.REL_X = relX;
-        this.REL_Y = relY;
+        REL_WIDTH = relWidth;
+        REL_HEIGHT = relHeight;
+        REL_X = relX;
+        REL_Y = relY;
     }
 
     @Override
@@ -41,6 +43,89 @@ public class Menu implements Paintable, Clickable{
 
     @Override
     public void paint(PaintEvent e) {
+
+        //blocks needed horizontally and veritcally to satisfy bounding region
+        int v = (int)(region.getHeight()/16);
+        int h = (int)(region.getWidth()/16);
+
         
+        
+    }
+
+    protected void paintRegion(PaintEvent e, float containerWidth, float containerHeight){
+
+        Renderer ren = e.getRenderer();
+
+        int v = (int)(region.getHeight()/16);
+        int h = (int)(region.getWidth()/16);
+
+        for(int r = 0; r < v; r++){
+            for(int c = 0; c < h; c++){
+
+                float px = (r-(v/2))*16;
+                float py = (c-(h/2))*16;
+
+                //check corners
+                if(r == 0 && c == 0){
+                    ren.render(Sprite.MENU_CORNER, px, py, Renderer.FLIP_NONE);
+                    continue;
+                }
+                if(r == 0 && c == h-1){
+                    ren.render(Sprite.MENU_CORNER, px, py, Renderer.FLIP_X);
+                    continue;
+                }
+                if(r == v-1 && c == 0){
+                    ren.render(Sprite.MENU_CORNER, px, py, Renderer.FLIP_Y);
+                    continue;
+                }
+                if(r == v-1 && c == h-1){
+                    ren.render(Sprite.MENU_CORNER, px, py, Renderer.FLIP_X | Renderer.FLIP_Y);
+                    continue;
+                }
+                //------------
+
+                //check borders
+                if(r == 0){
+                    ren.render(Sprite.MENU_BORDER, px, py, Renderer.FLIP_NONE);
+                    continue;
+                }
+                if(r == v-1){
+                    ren.render(Sprite.MENU_BORDER, px, py, Renderer.FLIP_Y);
+                    continue;
+                }
+                if(c == 0){
+                    ren.render(Sprite.MENU_BORDER, px, py,  Renderer.ROTATE_90 | Renderer.FLIP_Y);
+                    continue;
+                }
+                if(c == h-1){
+                    ren.render(Sprite.MENU_BORDER, px, py, Renderer.ROTATE_90);
+                    continue;
+                }
+                //------------
+
+                //render inside
+                ren.render(Sprite.MENU_FILL, px, py, Renderer.FLIP_NONE);
+            }   
+        }
+    }
+
+    //--------------------------------------------------------------------
+    //getters and setters
+    //--------------------------------------------------------------------
+
+    public List<MenuComponent> getComponents() {
+        return this.components;
+    }
+
+    public void setComponents(List<MenuComponent> components) {
+        this.components = components;
+    }
+
+    public Region getRegion() {
+        return this.region;
+    }
+
+    public void setRegion(Region region) {
+        this.region = region;
     }
 }

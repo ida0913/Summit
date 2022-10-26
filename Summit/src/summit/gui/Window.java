@@ -173,4 +173,13 @@ public class Window {
 
         this.state = newState;
     }
+
+    
+    //--------------------------------------------------------------------
+    //getters and setters
+    //--------------------------------------------------------------------
+
+    public pushMenu(Menu menu){
+        menus.
+    }
 }
