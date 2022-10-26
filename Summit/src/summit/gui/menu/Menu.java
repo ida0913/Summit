@@ -45,15 +45,7 @@ public class Menu implements Paintable, Clickable{
     public void paint(PaintEvent e) {
 
         //blocks needed horizontally and veritcally to satisfy bounding region
-        int v = (int)(region.getHeight()/16);
-        int h = (int)(region.getWidth()/16);
-
         
-        
-    }
-
-    protected void paintRegion(PaintEvent e, float containerWidth, float containerHeight){
-
         Renderer ren = e.getRenderer();
 
         int v = (int)(region.getHeight()/16);
@@ -62,8 +54,8 @@ public class Menu implements Paintable, Clickable{
         for(int r = 0; r < v; r++){
             for(int c = 0; c < h; c++){
 
-                float px = (r-(v/2))*16;
-                float py = (c-(h/2))*16;
+                float px = region.getX()-((r-(v/2))*16);
+                float py = region.getY()-((c-(h/2))*16);
 
                 //check corners
                 if(r == 0 && c == 0){

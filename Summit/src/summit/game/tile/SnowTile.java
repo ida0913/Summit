@@ -1,30 +1,34 @@
 package summit.game.tile;
 
-import summit.game.tile.Tile;
+import java.awt.event.MouseEvent;
+
+import summit.game.GameMap;
 import summit.game.GameUpdate;
 import summit.game.GameUpdateEvent;
 import summit.gfx.PaintEvent;
+import summit.gfx.Sprite;
 
 public class SnowTile extends Tile{
 
-    public Tile(float width, float height, float x, float y){
-        super(width, height, x, y);
+    public SnowTile(float width, float height, float x, float y){
+        super(x, y, width, height);
     }
 
     @Override
     public void paint(PaintEvent e){
-        e.getRenderer().render(Sprites.SNOW_TILE, getX(), getY(), 0);
+        e.getRenderer().render(Sprite.SNOW_TILE, getX(), getY(), 0);
     }
 
     @Override
     public void click(GameMap map, MouseEvent e){
-        if(map.getPlayer().inHand() instanceof ShovelTool.class){
+        // if(map.getPlayer().inHand() instanceof ShovelTool){
 
-        }
+        // }
     }
 
     @Override
-    public void update(PaintEvent e){
-        //do nothing
+    public void update(GameUpdateEvent e) {
+        // TODO Auto-generated method stub
+        
     }
 }

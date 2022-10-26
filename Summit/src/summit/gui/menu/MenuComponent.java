@@ -1,7 +1,5 @@
 package summit.gui.menu;
 
-import summit.gfx.PaintEvent;
-
 public class MenuComponent extends Menu{
     private Menu parent;
 
@@ -10,4 +8,6 @@ public class MenuComponent extends Menu{
                 parent.getRegion().getWidth()*relWidth, parent.getRegion().getHeight()*relHeight);
         this.parent = parent;
     }
+
+    
 }

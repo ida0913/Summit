@@ -9,13 +9,14 @@ public class Main {
         Thread main = new Thread(new Runnable() {
             @Override
             public void run() {
-                BufferedSprites.loadSprites("C:/Users/aadiu/Desktop/Programming Files/Personal Projects/Java Projects/Summit/src/Summit/resources");
+                BufferedSprites.loadSprites("C:/Users/aadiu/Desktop/Programming Files/Personal Projects/Java Projects/Summit Game/Summit/Summit/src/summit/resources");
 
                 java.awt.Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
 
                 System.out.println(screen);
 
-                Window window = new Window("summit", screen.width, screen.height);
+                Window window = new Window("summit", screen.width/2, screen.height/2);
+                
                 window.setState(WindowState.SELECTIONMENUS);
             }
         });

@@ -17,7 +17,7 @@ public class TileStack implements Clickable, Paintable, GameUpdate {
     private float x, y;
     
     public TileStack(float x, float y){
-        tiles = new Stack();
+        tiles = new Stack<>();
         this.x = x;
         this.y = y;
     }
@@ -49,9 +49,9 @@ public class TileStack implements Clickable, Paintable, GameUpdate {
         for(int i = 0; i < tiles.size(); i++){
             Tile t = tiles.get(i);
             t.update(e);
-            if(t.isSetToDestroy()){
+            // if(t.isSetToDestroy()){
 
-            }
+            // }
         }
     }
 }

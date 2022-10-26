@@ -50,7 +50,11 @@ public class Window {
         width = w;
         height = h;
         
+        menus = new Stack<>();
+
         renderer = new Renderer();
+
+        world = new GameWorld(this);
 
         bg = Color.BLUE;
 
@@ -87,57 +91,60 @@ public class Window {
             }
         });
 
-        frame = new JFrame(title);
-        frame.getContentPane().setPreferredSize(new Dimension(width, height));
-        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        frame.setResizable(true);
+        //init window frame, canvas, and buffer strategy
+        {
+            frame = new JFrame(title);
+            frame.getContentPane().setPreferredSize(new Dimension(width, height));
+            frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+            frame.setResizable(true);
 
-        GraphicsConfiguration graphicsConfiguration = 
-                GraphicsEnvironment
-                    .getLocalGraphicsEnvironment()
-                    .getDefaultScreenDevice()
-                    .getDefaultConfiguration();
+            GraphicsConfiguration graphicsConfiguration = 
+                    GraphicsEnvironment
+                        .getLocalGraphicsEnvironment()
+                        .getDefaultScreenDevice()
+                        .getDefaultConfiguration();
 
-        canvas = new Canvas(graphicsConfiguration);
+            canvas = new Canvas(graphicsConfiguration);
 
-        canvas.setIgnoreRepaint(true);
-        canvas.setPreferredSize(new Dimension(width, height));
-        canvas.setSize(width, height);
-        frame.add(canvas);
+            canvas.setIgnoreRepaint(true);
+            canvas.setPreferredSize(new Dimension(width, height));
+            canvas.setSize(width, height);
+            frame.add(canvas);
 
-        frame.pack();
-        frame.setLocationRelativeTo(null);
+            frame.pack();
+            frame.setLocationRelativeTo(null);
 
-        canvas.createBufferStrategy(2);
-        buffer = canvas.getBufferStrategy();
+            canvas.createBufferStrategy(2);
+            buffer = canvas.getBufferStrategy();
 
-        frame.addWindowListener(new WindowAdapter() {
-            @Override
-            public void windowClosing(WindowEvent e) {
-                closed = true;
-                super.windowClosing(e);
-            }
+            frame.addWindowListener(new WindowAdapter() {
+                @Override
+                public void windowClosing(WindowEvent e) {
+                    closed = true;
+                    super.windowClosing(e);
+                }
 
-            @Override
-            public void windowGainedFocus(WindowEvent e) {
-                super.windowGainedFocus(e);
-            }
+                @Override
+                public void windowGainedFocus(WindowEvent e) {
+                    super.windowGainedFocus(e);
+                }
 
-            @Override
-            public void windowLostFocus(WindowEvent e) {
-                super.windowLostFocus(e);
-            }
-        });
-        frame.addComponentListener(new ComponentAdapter() {
-            @Override
-            public void componentResized(ComponentEvent e) {
-                super.componentResized(e);
-                width = canvas.getWidth();
-                height = canvas.getHeight();
-            }
-        });
+                @Override
+                public void windowLostFocus(WindowEvent e) {
+                    super.windowLostFocus(e);
+                }
+            });
+            frame.addComponentListener(new ComponentAdapter() {
+                @Override
+                public void componentResized(ComponentEvent e) {
+                    super.componentResized(e);
+                    width = canvas.getWidth();
+                    height = canvas.getHeight();
+                }
+            });
 
-        frame.setVisible(true);
+            frame.setVisible(true);
+        }
 
         graphicsThread.start();
         mouseThread.start();
@@ -178,8 +185,4 @@ public class Window {
     //--------------------------------------------------------------------
     //getters and setters
     //--------------------------------------------------------------------
-
-    public pushMenu(Menu menu){
-        menus.
-    }
 }

@@ -1,34 +1,31 @@
 package summit.game.tile;
 
-import summit.game.GameMap;
-import summit.gfx.PaintEvent;
+import summit.game.GameUpdate;
 import summit.gfx.Paintable;
 import summit.gui.Clickable;
-import summit.game.GameUpdate;
+import summit.util.Region;
 
-import java.awt.event.MouseEvent;
-
-public abstract Tile implements Clickable, Paintable, GameUpdate {
-
-    private float width;
-    private float height;
-    private float x;
-    private float y;
+public abstract class Tile extends Region implements Clickable, Paintable, GameUpdate {
 
     private boolean setToDestroy;
 
-    public Tile(float width, float height, float x, float y){
-        this.height = height;
-        this.width = width;
-        this.x = x;
-        this.y = y;
+    // public boolean isSetToDestroy() {
+    //     return this.setToDestroy;
+    // }
+
+    public void setDestroy(boolean setToDestroy) {
+        this.setToDestroy = setToDestroy;
+    }
+
+    public Tile(float x, float y, float width, float height){
+        super(x, y, width, height);
     }
 
     public Tile(float x, float y){
-        this(1, 1, x, y);
+        this(x, y, 1, 1);
     }
 
-    public boolean isSetToDestroy(){
-
-    }
+    // public boolean isSetToDestroy(){
+        
+    // }
 }
