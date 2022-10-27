@@ -1,7 +1,17 @@
 package summit.gui;
-import java.awt.*;
+import java.awt.BasicStroke;
+import java.awt.Canvas;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics2D;
+import java.awt.GraphicsConfiguration;
+import java.awt.GraphicsEnvironment;
+import java.awt.RenderingHints;
+import java.awt.Toolkit;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferStrategy;
@@ -9,8 +19,8 @@ import java.awt.image.BufferedImage;
 import java.util.Stack;
 
 import javax.swing.JFrame;
+import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
-import javax.swing.border.StrokeBorder;
 
 import summit.game.GameWorld;
 import summit.gfx.PaintEvent;
@@ -24,6 +34,8 @@ public class Window {
     private JFrame frame;
     private Canvas canvas;
     private Renderer renderer;
+
+    private boolean fullscreen = false;
 
     public static final int SCREEN_WIDTH = Toolkit.getDefaultToolkit().getScreenSize().width;
     public static final int SCREEN_HEIGHT = Toolkit.getDefaultToolkit().getScreenSize().height;
@@ -146,11 +158,25 @@ public class Window {
                 }
             });
 
+            frame.addKeyListener(new KeyListener(){
+                @Override
+                public void keyPressed(KeyEvent e) {
+                    if(e.getKeyCode() == KeyEvent.VK_F11){
+                        setFullscreen(!fullscreen);
+                    }
+                }
+    
+                @Override
+                public void keyReleased(KeyEvent e) { }
+                @Override
+                public void keyTyped(KeyEvent e) { }
+            });
+
             frame.setVisible(true);
         }
 
         graphicsThread.start();
-//        mouseThread.start();
+        // mouseThread.start();
     }
     
     private void renderFrame(Graphics2D g){
@@ -227,5 +253,21 @@ public class Window {
 
     public void clearMenus(){
 
+    }
+
+    public void setFullscreen(boolean full) {
+        SwingUtilities.invokeLater(new Runnable(){
+            @Override
+            public void run() {
+                fullscreen = full;
+                if(fullscreen){
+                    GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().setFullScreenWindow(frame);
+                }
+                else if(!fullscreen){
+                    GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().setFullScreenWindow(null);
+                    frame.setSize(SCREEN_WIDTH/2, SCREEN_HEIGHT/2);
+                }
+            }
+        });
     }
 }

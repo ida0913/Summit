@@ -21,7 +21,7 @@ public class Main {
                 
                 window.setState(WindowState.SELECTIONMENUS);
 
-                Menu testmenu = new Menu(0.5f, 0.5f, 1f, 1f);
+                Menu testmenu = new Menu(0.5f, 0.5f, 0.5f, 0.8f);
                 window.pushMenu(testmenu);
             }
         });
