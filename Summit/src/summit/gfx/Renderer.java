@@ -1,13 +1,14 @@
 package summit.gfx;
 
 import java.awt.geom.Point2D;
+import java.util.Arrays;
 
 public class Renderer {
     
     private int[][] frame;
 
-    public static final int WIDTH = 512;
-    public static final int HEIGHT = 288;
+    public static final int WIDTH = 256;
+    public static final int HEIGHT = 144;
 
     public static final int FLIP_NONE = 0b0;
     public static final int FLIP_X = 0b1;
@@ -20,47 +21,65 @@ public class Renderer {
         frame = new int[HEIGHT][WIDTH];
     }
 
-    public int[][] uspscale(int newWidth, int newHeight){
+    public void resetFrame(){
+        frame = new int[HEIGHT][WIDTH]; 
+    }
+
+    public void uspscale(int newWidth, int newHeight){
 
         int[][] newFrame = new int[newHeight][newWidth];
 
         float scaleX = newWidth/WIDTH;
         float scaleY = newHeight/HEIGHT;
 
-        for (int r = 0; r < frame.length; r++) {
-            for (int c = 0; c < frame[0].length; c++) {
-                newFrame[Math.round(r*scaleY)][Math.round(c*scaleX)] = frame[r][c];
+
+        //cool looking spaced pixels
+        // for (int r = 0; r < frame.length; r++) {
+        //     for (int c = 0; c < frame[0].length; c++) {
+        //         newFrame[Math.round(r*scaleY)][Math.round(c*scaleX)] = frame[r][c];
+        //     }
+        // }
+
+        for(int r = 0; r < newFrame.length; r++) {
+            for(int c = 0; c < newFrame[0].length; c++){
+                if(Math.round(r/scaleY) < frame.length && Math.round(c/scaleX) < frame[0].length)
+                    newFrame[r][c] = frame[Math.round(r/scaleY)][Math.round(c/scaleX)];
             }
         }
 
-        return newFrame;
+        this.frame = newFrame;
     }
 
 
     /**
      * USE THIS METHOD FOR GENERAL RENDERING (MENUS, DIALOGUE, ETC). COORDINATES ARE SCREEN COORDINATES
      */
-    public void render(int s, float x, float y, int flip){
+    public void render(int s, float x, float y, int transform){
+        
         int[][] sprite = BufferedSprites.getSprite(s);
 
         int nx = (int)x-(sprite[0].length/2);
         int ny = (int)y-(sprite.length/2);
 
-        if(true){
-            for(int yy = ny; yy < frame.length; yy++) {
-                for(int xx = nx; xx < frame[0].length; xx++) {
-                    frame[yy][xx] = sprite[yy-ny][xx-nx];
-                }
+        if(transform != FLIP_NONE){
+            if((transform & ROTATE_90) == ROTATE_90){
+                sprite = rotate(sprite);
             }
-        }
-        else if(flip == FLIP_X){
+            if((transform & FLIP_X) == FLIP_X){
+                sprite = flip(sprite, FLIP_X);
+            }
+            if((transform & FLIP_Y) == FLIP_Y){
+                sprite = flip(sprite, FLIP_Y);
+            }
+        }       
 
-        }
-        else if(flip == FLIP_Y){
-
-        }
-        else if(flip == (FLIP_X | FLIP_X)){
-
+        //write final sprite
+        for(int yy = ny; yy < ny+sprite.length; yy++) {
+            for(int xx = nx; xx < nx+sprite[0].length; xx++) {
+                if(inArrBounds(yy-ny, xx-nx, sprite.length, sprite[0].length) && 
+                    inArrBounds(yy, xx, frame.length, frame[0].length))
+                    frame[yy][xx] = sprite[yy-ny][xx-nx];
+            }
         }
     }
 
@@ -75,10 +94,18 @@ public class Renderer {
         this.render(s, spritePos.x, spritePos.y, flip);
     }
 
+    public int[] frameAsArray(){
+        int[] reformated = new int[frame.length*frame[0].length];
 
+        for(int i = 0; i < reformated.length; i++) {
+            reformated[i] = frame[ i/frame.length ][ i%frame[0].length ]; 
+        }
+
+        return reformated;
+    }
 
     //--------------------------------------------------------------------
-    // utilities
+    // utility methods
     //--------------------------------------------------------------------
 
     /**
@@ -89,6 +116,48 @@ public class Renderer {
         float ny = (HEIGHT/2)-(y*16F)+(cam.getY()*16F);
 
         return new Point2D.Float(nx, ny);
+    }
+
+    /** 
+     * Rotate 90 degrees clockwise
+    */
+    public static int[][] rotate(int[][] arr){
+        int[][] rotated = new int[arr.length][arr[0].length];
+
+        for(int r = 0; r < arr.length; r++) {
+            for(int c = 0; c < arr[0].length; c++) {
+                //transform matrix
+                //prev column index becomes row index
+                //arr[0].length-r-1 for new column index
+
+                rotated[c][arr[0].length-r-1] = arr[r][c];
+            }
+        }
+
+        return arr = rotated;
+    }
+
+    public static int[][] flip(int[][] arr, int transform){
+        int[][] transformed = new int[arr.length][arr[0].length];
+
+        if((transform & FLIP_X) == FLIP_X){
+            for(int r = 0; r < arr.length; r++){
+                for(int c = 0; c < arr[0].length/2+1; c++){
+                    transformed[r][c] = arr[r][arr[0].length-c-1];
+                    transformed[r][arr[0].length-c-1] = arr[r][c];
+                }
+            }
+        }
+        if((transform & FLIP_Y) == FLIP_Y){
+            for(int r = 0; r < arr.length/2+1; r++){
+                for(int c = 0; c < arr[0].length; c++){
+                    transformed[r][c] = arr[arr.length-r-1][c];
+                    transformed[arr.length-r-1][c] = arr[r][c];
+                }
+            }
+        }
+
+        return arr = transformed;
     }
 
     /**
@@ -112,6 +181,10 @@ public class Renderer {
         return false;
     }
 
+    public static boolean inArrBounds(int r, int c, int rows, int cols){
+        return (r >= 0) && (r < rows) && (c >= 0) && (c < cols);
+    }
+
     //------------------------------------------------------------------
     //getters and setters
     //------------------------------------------------------------------
@@ -122,5 +195,9 @@ public class Renderer {
 
     public Camera getCamera() {
         return this.camera;
+    }
+
+    public int[][] getFrame(){
+        return frame;
     }
 }

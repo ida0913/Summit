@@ -11,7 +11,7 @@ public class Main {
         Thread main = new Thread(new Runnable() {
             @Override
             public void run() {
-                BufferedSprites.loadSprites("C:\\Users\\205625\\IdeaProjects\\Summit\\src\\summit\\resources");
+                BufferedSprites.loadSprites("C:/Users/aadiu/Desktop/Programming Files/Personal Projects/Java Projects/Summit Game/Summit/Summit/src/summit/resources");
 
                 java.awt.Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
 

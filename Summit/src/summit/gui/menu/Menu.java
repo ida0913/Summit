@@ -44,67 +44,134 @@ public class Menu implements Paintable, Clickable{
     @Override
     public void paint(PaintEvent e) {
 
-        //blocks needed horizontally and veritcally to satisfy bounding region
-        
         Renderer ren = e.getRenderer();
 
-        int v = (int)(region.getHeight()/16);
-        int h = (int)(region.getWidth()/16);
+        //for centering on region coordinate
+        int xOffset = (int)((region.getWidth()%16)/2);
+        int yOffset = (int)((region.getHeight()%16)/2);
 
-        System.out.println(v + "  " + h);
+        int startX = (int)(region.getX()-(region.getWidth()/2)) + xOffset;
+        int startY = (int)(region.getY()-(region.getHeight()/2)) + yOffset;
 
-//        System.out.println(region);
+        int endX = (int)(region.getX()+(region.getWidth()/2) - xOffset);
+        int endY = (int)(region.getY()+(region.getHeight()/2) - yOffset);
 
-        for(int y = 0; y < v; y++){
-            for(int x = 0; x < h; x++){
-
-                float py = region.getX()-((y-(v/2))*16);
-                float px = region.getY()-((x-(h/2))*16);
-
-                System.out.println(px + "  " + py + "\n\n");
-
-                //check corners
-                if(y == 0 && x == 0){
-                    ren.render(Sprite.MENU_CORNER, px, py, Renderer.FLIP_NONE);
+        //traversed in pixel coordinates
+        for (int x = startX; x <= endX; x+=16) {
+            for (int y = startY; y <= endY; y+=16) {
+                // System.out.println(px + "  " + py + "\n\n");
+                
+                if(y == startY && x == startX){
+                    ren.render(Sprite.MENU_CORNER, x, y, Renderer.FLIP_NONE);
                     continue;
                 }
-                if(y == 0 && x == h-1){
-                    ren.render(Sprite.MENU_CORNER, px, py, Renderer.FLIP_X);
+                if(y == startY && x == endX){
+                    ren.render(Sprite.MENU_CORNER, x, y, Renderer.FLIP_X);
                     continue;
                 }
-                if(y == v-1 && x == 0){
-                    ren.render(Sprite.MENU_CORNER, px, py, Renderer.FLIP_Y);
+                if(y == endY && x == startX){
+                    ren.render(Sprite.MENU_CORNER, x, y, Renderer.FLIP_Y);
                     continue;
                 }
-                if(y == v-1 && x == h-1){
-                    ren.render(Sprite.MENU_CORNER, px, py, Renderer.FLIP_X | Renderer.FLIP_Y);
+                if(y == endY && x == endX){
+                    ren.render(Sprite.MENU_CORNER, x, y, Renderer.FLIP_X | Renderer.FLIP_Y);
                     continue;
                 }
                 //------------
 
                 //check borders
-                if(y == 0){
-                    ren.render(Sprite.MENU_BORDER, px, py, Renderer.FLIP_NONE);
+                if(y == startY){
+                    ren.render(Sprite.MENU_BORDER, x, y, Renderer.FLIP_NONE);
                     continue;
                 }
-                if(y == v-1){
-                    ren.render(Sprite.MENU_BORDER, px, py, Renderer.FLIP_Y);
+                if(y == endY){
+                    ren.render(Sprite.MENU_BORDER, x, y, Renderer.FLIP_Y);
                     continue;
                 }
-                if(x == 0){
-                    ren.render(Sprite.MENU_BORDER, px, py,  Renderer.ROTATE_90 | Renderer.FLIP_Y);
+                if(x == startX){
+                    ren.render(Sprite.MENU_BORDER, x, y,  Renderer.ROTATE_90 | Renderer.FLIP_X);
                     continue;
                 }
-                if(x == h-1){
-                    ren.render(Sprite.MENU_BORDER, px, py, Renderer.ROTATE_90);
+                if(x == endX){
+                    ren.render(Sprite.MENU_BORDER, x, y, Renderer.ROTATE_90);
                     continue;
                 }
                 //------------
 
                 //render inside
-                ren.render(Sprite.MENU_FILL, px, py, Renderer.FLIP_NONE);
-            }   
+                ren.render(Sprite.MENU_FILL, x, y, Renderer.FLIP_NONE);
+            }
         }
+        
+        //blocks needed horizontally and veritcally to satisfy bounding region
+        
+//         Renderer ren = e.getRenderer();
+
+//         int v = (int)(region.getHeight()/16);
+//         int h = (int)(region.getWidth()/16);
+
+//         System.out.println(v + "  " + h);
+
+// //        System.out.println(region);
+
+//         for(int y = 0; y < 1; y++){
+//             for(int x = 0; x < h; x++){
+
+//                 float py = region.getX()-((y-(v/2))*16);
+//                 float px = region.getY()-((x-(h/2))*16);
+
+//                 // System.out.println(px + "  " + py + "\n\n");
+                
+//                 //check corners
+//                 if(y == startY && x == startX){
+//                     System.out.println("hi1");
+//                     ren.render(Sprite.MENU_CORNER, px, py, Renderer.FLIP_NONE);
+//                     continue;
+//                 }
+//                 if(y == startY && x == h-1){
+//                     System.out.println("hi2");
+//                     ren.render(Sprite.MENU_CORNER, px, py, Renderer.FLIP_X);
+//                     continue;
+//                 }
+//                 if(y == v-1 && x == startX){
+//                     System.out.println("hi3");
+//                     ren.render(Sprite.MENU_CORNER, px, py, Renderer.FLIP_Y);
+//                     continue;
+//                 }
+//                 if(y == v-1 && x == h-1){
+//                     System.out.println("hi4");
+//                     ren.render(Sprite.MENU_CORNER, px, py, Renderer.FLIP_X | Renderer.FLIP_Y);
+//                     continue;
+//                 }
+//                 //------------
+
+//                 //check borders
+//                 if(y == startY){
+//                     System.out.println("hi5");
+//                     ren.render(Sprite.MENU_BORDER, px, py, Renderer.FLIP_NONE);
+//                     continue;
+//                 }
+//                 if(y == v-1){
+//                     System.out.println("hi6");
+//                     ren.render(Sprite.MENU_BORDER, px, py, Renderer.FLIP_Y);
+//                     continue;
+//                 }
+//                 if(x == startX){
+//                     System.out.println("hi7");
+//                     ren.render(Sprite.MENU_BORDER, px, py,  Renderer.ROTATE_90 | Renderer.FLIP_Y);
+//                     continue;
+//                 }
+//                 if(x == h-1){
+//                     System.out.println("hi8");
+//                     ren.render(Sprite.MENU_BORDER, px, py, Renderer.ROTATE_90);
+//                     continue;
+//                 }
+//                 //------------
+
+//                 //render inside
+//                 ren.render(Sprite.MENU_FILL, px, py, Renderer.FLIP_NONE);
+//             }   
+//         }
     }
 
     //--------------------------------------------------------------------

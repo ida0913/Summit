@@ -7,11 +7,12 @@ import summit.game.tile.Tile;
 import summit.gfx.PaintEvent;
 import summit.gfx.Paintable;
 import summit.gui.Clickable;
+import summit.gui.GameClickable;
 
 import java.awt.event.MouseEvent;
 import java.util.Stack;
 
-public class TileStack implements Clickable, Paintable, GameUpdate {
+public class TileStack implements GameClickable, Paintable, GameUpdate {
 
     private Stack<Tile> tiles;
     private float x, y;

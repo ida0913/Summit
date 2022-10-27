@@ -10,10 +10,12 @@ import java.util.Stack;
 
 import javax.swing.JFrame;
 import javax.swing.WindowConstants;
+import javax.swing.border.StrokeBorder;
 
 import summit.game.GameWorld;
 import summit.gfx.PaintEvent;
 import summit.gfx.Renderer;
+import summit.gfx.Sprite;
 import summit.gui.menu.Menu;
 import summit.util.Time;
 
@@ -25,6 +27,9 @@ public class Window {
 
     public static final int SCREEN_WIDTH = Toolkit.getDefaultToolkit().getScreenSize().width;
     public static final int SCREEN_HEIGHT = Toolkit.getDefaultToolkit().getScreenSize().height;
+
+    // public static final int SCREEN_WIDTH = 1920;
+    // public static final int SCREEN_HEIGHT = 1080;
 
     private boolean closed = false;
 
@@ -52,7 +57,7 @@ public class Window {
 
         renderer = new Renderer();
 
-//        world = new GameWorld(this);
+        // world = new GameWorld(this);
 
         bg = Color.LIGHT_GRAY;
 
@@ -149,8 +154,8 @@ public class Window {
     }
     
     private void renderFrame(Graphics2D g){
-        g.setColor(bg);
-        g.fillRect(0, 0, width, height);
+        // g.setColor(bg);
+        // g.fillRect(0, 0, width, height);
 
         PaintEvent pe = new PaintEvent(renderer, Time.timeMs());
 
@@ -161,14 +166,32 @@ public class Window {
             menu.paint(pe);
         }
 
-        int[][] finalFrame = renderer.uspscale(SCREEN_WIDTH, SCREEN_HEIGHT);
+        renderer.render(Sprite.PINE_TREE, Renderer.WIDTH/2, Renderer.HEIGHT/2, Renderer.FLIP_NONE);
 
-        for (int r = 0; r < finalFrame.length; r++) {
-            for (int c = 0; c < finalFrame[0].length; c++) {
-                g.setColor(new Color(finalFrame[r][c]));
-                g.drawLine(c, r, c, r);
+        //----------------------------------------------------------------------------------
+        // draw final frame to screen
+        //----------------------------------------------------------------------------------
+
+        renderer.uspscale(SCREEN_WIDTH, SCREEN_HEIGHT);
+        int[][] frame = renderer.getFrame();
+        // int[] finalFrameArray = renderer.frameAsArray();
+        BufferedImage finalFrame = new BufferedImage(SCREEN_WIDTH, SCREEN_HEIGHT, BufferedImage.TYPE_INT_ARGB);
+
+        for (int r = 0; r < frame.length; r++) {
+            for (int c = 0; c < frame[0].length; c++) {
+                finalFrame.setRGB(c, r, frame[r][c]);
             }
         }
+
+        Graphics2D g2 = finalFrame.createGraphics();
+        g2.setColor(Color.red);
+        g2.setStroke(new BasicStroke(10));
+        g2.drawRect(0, 0, finalFrame.getWidth(), finalFrame.getHeight());
+
+
+        g.drawImage(finalFrame, null, 0, 0);
+        
+        renderer.resetFrame();
     }
 
     public void setState(WindowState newState){
@@ -200,5 +223,9 @@ public class Window {
 
     public void popMenu(){
         menus.pop();
+    }
+
+    public void clearMenus(){
+
     }
 }
