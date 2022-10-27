@@ -58,7 +58,6 @@ public class Window {
     private BufferStrategy buffer;
 
     private Thread graphicsThread;
-    private Thread mouseThread;
     
     public Window(String title, int w, int h){
 
@@ -96,13 +95,6 @@ public class Window {
                         buffer.show();
                     } while (buffer.contentsLost());
                 }
-            }
-        });
-
-        mouseThread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                
             }
         });
 
