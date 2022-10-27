@@ -8,6 +8,4 @@ public class MenuComponent extends Menu{
                 parent.getRegion().getWidth()*relWidth, parent.getRegion().getHeight()*relHeight);
         this.parent = parent;
     }
-
-    
 }
