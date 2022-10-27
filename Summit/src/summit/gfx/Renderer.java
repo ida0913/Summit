@@ -173,10 +173,6 @@ public class Renderer {
         return new Point2D.Float(nx, ny); 
     }
 
-    public static float toPixel(float n){
-        return n*16;
-    }
-
     public static boolean onScreen(float x, float y, Camera cam){
         return false;
     }
