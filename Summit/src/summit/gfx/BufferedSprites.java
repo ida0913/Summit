@@ -3,20 +3,20 @@ package summit.gfx;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
 
 import javax.imageio.ImageIO;
 
 public class BufferedSprites{
 
-    /**'Object' will wrap a 2d int array*/
-    public static Object[] sprites;
+    /**'Object' will wrap a 2d int array, ordered by alphabetic file name*/
+    private static HashMap<Integer, Object> sprites = new HashMap();
+    // private static Object[] sprites;
 
     public static void loadSprites(String path){
 
         File[] dirFiles = new File(path).listFiles();
         
-        sprites = new Object[dirFiles.length];
-
         for(int i = 0; i < dirFiles.length; i++){
             String absPath = dirFiles[i].getAbsolutePath();
             
@@ -33,8 +33,8 @@ public class BufferedSprites{
                             dataBuffer[r][c] = sprite.getRGB(c, r);
                         }
                     }
-
-                    sprites[i] = dataBuffer;
+                    
+                    sprites.put(i, dataBuffer);
 
                     System.out.println(ref);
                     
@@ -44,6 +44,6 @@ public class BufferedSprites{
     }
 
     public static int[][] getSprite(int spriteInd){
-        return (int[][])sprites[spriteInd];
+        return (int[][])sprites.get(spriteInd);
     }
 }
