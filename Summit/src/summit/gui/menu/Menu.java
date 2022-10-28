@@ -56,6 +56,17 @@ public class Menu implements Paintable, Clickable{
         int endX = (int)(region.getX()+(region.getWidth()/2) - xOffset);
         int endY = (int)(region.getY()+(region.getHeight()/2) - yOffset);
 
+        // if((startX-endX)%2 == 1)
+        //     System.out.println("dsfaadsfads");
+        // startX -= (startX-endX)%2 != 0 ? 8 : 0;
+        // startY -= (startY-endY)%2 != 0 ? 8 : 0;
+
+        // endX += (startX-endX)%2 != 0 ? 8 : 0;
+        // endY += (startY-endY)%2 != 0 ? 8 : 0;
+
+        // System.out.println((startX-endX)/16);
+        // System.out.println((startY-endY)/16);
+
         //traversed in pixel coordinates
         for (int x = startX; x <= endX; x+=16) {
             for (int y = startY; y <= endY; y+=16) {

@@ -7,8 +7,8 @@ public class Renderer {
     
     private int[][] frame;
 
-    public static final int WIDTH = 256;
-    public static final int HEIGHT = 144;
+    public static final int WIDTH = 128;
+    public static final int HEIGHT = 72;
 
     public static final int FLIP_NONE = 0b0;
     public static final int FLIP_X = 0b1;
