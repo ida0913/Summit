@@ -99,75 +99,81 @@ public class Window {
         });
 
         //init window frame, canvas, and buffer strategy
-        {
-            frame = new JFrame(title);
-            frame.getContentPane().setPreferredSize(new Dimension(width, height));
-            frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-            frame.setResizable(true);
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                {
+                    frame = new JFrame(title);
+                    frame.getContentPane().setPreferredSize(new Dimension(width, height));
+                    frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+                    frame.setResizable(true);
 
-            GraphicsConfiguration graphicsConfiguration = 
-                    GraphicsEnvironment
-                        .getLocalGraphicsEnvironment()
-                        .getDefaultScreenDevice()
-                        .getDefaultConfiguration();
+                    GraphicsConfiguration graphicsConfiguration =
+                            GraphicsEnvironment
+                                    .getLocalGraphicsEnvironment()
+                                    .getDefaultScreenDevice()
+                                    .getDefaultConfiguration();
 
-            canvas = new Canvas(graphicsConfiguration);
+                    canvas = new Canvas(graphicsConfiguration);
 
-            canvas.setIgnoreRepaint(true);
-            canvas.setPreferredSize(new Dimension(width, height));
-            canvas.setSize(width, height);
-            frame.add(canvas);
+                    canvas.setIgnoreRepaint(true);
+                    canvas.setPreferredSize(new Dimension(width, height));
+                    canvas.setSize(width, height);
+                    frame.add(canvas);
 
-            frame.pack();
-            frame.setLocationRelativeTo(null);
+                    frame.pack();
+                    frame.setLocationRelativeTo(null);
 
-            canvas.createBufferStrategy(2);
-            buffer = canvas.getBufferStrategy();
+                    canvas.createBufferStrategy(2);
+                    buffer = canvas.getBufferStrategy();
 
-            frame.addWindowListener(new WindowAdapter() {
-                @Override
-                public void windowClosing(WindowEvent e) {
-                    closed = true;
-                    super.windowClosing(e);
+                    frame.addWindowListener(new WindowAdapter() {
+                        @Override
+                        public void windowClosing(WindowEvent e) {
+                            closed = true;
+                            super.windowClosing(e);
+                        }
+
+                        @Override
+                        public void windowGainedFocus(WindowEvent e) {
+                            super.windowGainedFocus(e);
+                        }
+
+                        @Override
+                        public void windowLostFocus(WindowEvent e) {
+                            super.windowLostFocus(e);
+                        }
+                    });
+                    frame.addComponentListener(new ComponentAdapter() {
+                        @Override
+                        public void componentResized(ComponentEvent e) {
+                            super.componentResized(e);
+                            width = canvas.getWidth();
+                            height = canvas.getHeight();
+                        }
+                    });
+
+                    frame.addKeyListener(new KeyListener(){
+                        @Override
+                        public void keyPressed(KeyEvent e) {
+                            if(e.getKeyCode() == KeyEvent.VK_F11){
+                                setFullscreen(!fullscreen);
+                            }
+                        }
+
+                        @Override
+                        public void keyReleased(KeyEvent e) { }
+                        @Override
+                        public void keyTyped(KeyEvent e) { }
+                    });
+
+                    frame.setVisible(true);
+
+                    graphicsThread.start();
                 }
+            }
+        });
 
-                @Override
-                public void windowGainedFocus(WindowEvent e) {
-                    super.windowGainedFocus(e);
-                }
-
-                @Override
-                public void windowLostFocus(WindowEvent e) {
-                    super.windowLostFocus(e);
-                }
-            });
-            frame.addComponentListener(new ComponentAdapter() {
-                @Override
-                public void componentResized(ComponentEvent e) {
-                    super.componentResized(e);
-                    width = canvas.getWidth();
-                    height = canvas.getHeight();
-                }
-            });
-
-            frame.addKeyListener(new KeyListener(){
-                @Override
-                public void keyPressed(KeyEvent e) {
-                    if(e.getKeyCode() == KeyEvent.VK_F11){
-                        setFullscreen(!fullscreen);
-                    }
-                }
-    
-                @Override
-                public void keyReleased(KeyEvent e) { }
-                @Override
-                public void keyTyped(KeyEvent e) { }
-            });
-
-            frame.setVisible(true);
-        }
-
-        graphicsThread.start();
         // mouseThread.start();
     }
     
@@ -184,7 +190,7 @@ public class Window {
             menu.paint(pe);
         }
 
-        renderer.render(Sprite.PINE_TREE, Renderer.WIDTH/2, Renderer.HEIGHT/2, Renderer.FLIP_NONE);
+//        renderer.render(Sprite.PINE_TREE, Renderer.WIDTH/2, Renderer.HEIGHT/2, Renderer.FLIP_NONE);
 
         //----------------------------------------------------------------------------------
         // draw final frame to screen

@@ -7,8 +7,8 @@ public class Renderer {
     
     private int[][] frame;
 
-    public static final int WIDTH = 128;
-    public static final int HEIGHT = 72;
+    public static final int WIDTH = 256;
+    public static final int HEIGHT = 144;
 
     public static final int FLIP_NONE = 0b0;
     public static final int FLIP_X = 0b1;
@@ -76,6 +76,9 @@ public class Renderer {
         //write final sprite
         for(int yy = ny; yy < ny+sprite.length; yy++) {
             for(int xx = nx; xx < nx+sprite[0].length; xx++) {
+                //fully transparent pixel
+                if(sprite[yy-ny][xx-nx] == -1)
+                    continue;
                 if(inArrBounds(yy-ny, xx-nx, sprite.length, sprite[0].length) && 
                     inArrBounds(yy, xx, frame.length, frame[0].length))
                     frame[yy][xx] = sprite[yy-ny][xx-nx];

@@ -17,10 +17,10 @@ public class Menu implements Paintable, Clickable{
     private List<MenuComponent> components;
     private Region region;
 
-    private final float REL_WIDTH;
-    private final float REL_HEIGHT;
-    private final float REL_X;
-    private final float REL_Y;
+    private float REL_WIDTH;
+    private float REL_HEIGHT;
+    private float REL_X;
+    private float REL_Y;
 
     public Menu(float relX, float relY, float relWidth, float relHeight){
         components = new ArrayList<>();
@@ -30,6 +30,10 @@ public class Menu implements Paintable, Clickable{
         REL_HEIGHT = relHeight;
         REL_X = relX;
         REL_Y = relY;
+    }
+
+    protected Menu(){
+        //use for subclasses
     }
 
     @Override
@@ -46,15 +50,25 @@ public class Menu implements Paintable, Clickable{
 
         Renderer ren = e.getRenderer();
 
+        int rWidth = ((int)(region.getWidth()/16))*16;
+        int rHeight = ((int)(region.getHeight()/16))*16;
+
+
+        int startX = (int)(region.getX()-(rWidth/2));
+        int startY = (int)(region.getY()-(rHeight/2));
+
+        int endX = (int)(region.getX()+(rWidth/2));
+        int endY = (int)(region.getY()+(rHeight/2));
+
         //for centering on region coordinate
-        int xOffset = (int)((region.getWidth()%16)/2);
-        int yOffset = (int)((region.getHeight()%16)/2);
+        // int xOffset = (int)((region.getWidth()%16)/2);
+        // int yOffset = (int)((region.getHeight()%16)/2);
 
-        int startX = (int)(region.getX()-(region.getWidth()/2)) + xOffset;
-        int startY = (int)(region.getY()-(region.getHeight()/2)) + yOffset;
+        // int startX = (int)(region.getX()-(region.getWidth()/2)) + xOffset;
+        // int startY = (int)(region.getY()-(region.getHeight()/2)) + yOffset;
 
-        int endX = (int)(region.getX()+(region.getWidth()/2) - xOffset);
-        int endY = (int)(region.getY()+(region.getHeight()/2) - yOffset);
+        // int endX = (int)(region.getX()+(region.getWidth()/2) - xOffset);
+        // int endY = (int)(region.getY()+(region.getHeight()/2) - yOffset);
 
         // if((startX-endX)%2 == 1)
         //     System.out.println("dsfaadsfads");
@@ -113,11 +127,21 @@ public class Menu implements Paintable, Clickable{
                 ren.render(Sprite.MENU_FILL, x, y, Renderer.FLIP_NONE);
             }
         }
+
+        //draw components
+
+        for (int i = 0; i < components.size(); i++) {
+            components.get(i).paint(e);
+        }
     }
 
     //--------------------------------------------------------------------
     //getters and setters
     //--------------------------------------------------------------------
+
+    public void addComponent(MenuComponent m){
+        components.add(m);
+    }
 
     public List<MenuComponent> getComponents() {
         return this.components;

@@ -31,11 +31,10 @@ public class BufferedSprites{
                     for (int r = 0; r < dataBuffer.length; r++) {
                         for (int c = 0; c < dataBuffer[0].length; c++) {
                             int argb = sprite.getRGB(c, r);
-                            int rgb = argb % (0xffffff);
-                            //floor(alpha)
-                            int shifted_a = (((argb >> 24) > 0 ? 0xff: 0) << 24) & 0b11111111000000000000000000000000; 
+                            
+                            // argb = (((argb >> 24) > 0 ? argb: -1));
 
-                            dataBuffer[r][c] = (rgb | shifted_a);
+                            dataBuffer[r][c] = argb;
                         }
                     }
                     
