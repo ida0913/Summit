@@ -10,7 +10,7 @@ import javax.imageio.ImageIO;
 public class BufferedSprites{
 
     /**'Object' will wrap a 2d int array, ordered by alphabetic file name*/
-    private static HashMap<Integer, Object> sprites = new HashMap();
+    private static HashMap<Integer, Object> sprites = new HashMap<>();
     // private static Object[] sprites;
 
     public static void loadSprites(String path){
