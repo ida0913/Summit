@@ -17,6 +17,7 @@ import java.awt.event.WindowEvent;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.util.Stack;
+import java.awt.event.KeyAdapter;
 
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
@@ -119,6 +120,7 @@ public class Window {
                     canvas.setIgnoreRepaint(true);
                     canvas.setPreferredSize(new Dimension(width, height));
                     canvas.setSize(width, height);
+                    canvas.setFocusable(true);
                     frame.add(canvas);
 
                     frame.pack();
@@ -126,6 +128,22 @@ public class Window {
 
                     canvas.createBufferStrategy(2);
                     buffer = canvas.getBufferStrategy();
+
+                    
+                    frame.addKeyListener(new KeyAdapter(){
+                        @Override
+                        public void keyPressed(KeyEvent e) {
+                            System.out.println("dfsaaf");
+                            if(e.getKeyCode() == KeyEvent.VK_F11){
+                                setFullscreen(!fullscreen);
+                            }
+                        }
+
+                        @Override
+                        public void keyReleased(KeyEvent e) { }
+                        @Override
+                        public void keyTyped(KeyEvent e) { }
+                    });
 
                     frame.addWindowListener(new WindowAdapter() {
                         @Override
@@ -144,6 +162,7 @@ public class Window {
                             super.windowLostFocus(e);
                         }
                     });
+
                     frame.addComponentListener(new ComponentAdapter() {
                         @Override
                         public void componentResized(ComponentEvent e) {
@@ -151,20 +170,6 @@ public class Window {
                             width = canvas.getWidth();
                             height = canvas.getHeight();
                         }
-                    });
-
-                    frame.addKeyListener(new KeyListener(){
-                        @Override
-                        public void keyPressed(KeyEvent e) {
-                            if(e.getKeyCode() == KeyEvent.VK_F11){
-                                setFullscreen(!fullscreen);
-                            }
-                        }
-
-                        @Override
-                        public void keyReleased(KeyEvent e) { }
-                        @Override
-                        public void keyTyped(KeyEvent e) { }
                     });
 
                     frame.setVisible(true);
@@ -190,7 +195,7 @@ public class Window {
             menu.paint(pe);
         }
 
-//        renderer.render(Sprite.PINE_TREE, Renderer.WIDTH/2, Renderer.HEIGHT/2, Renderer.FLIP_NONE);
+        // renderer.render(Sprite.PINE_TREE, Renderer.WIDTH/2, Renderer.HEIGHT/2, Renderer.FLIP_NONE);
 
         //----------------------------------------------------------------------------------
         // draw final frame to screen
@@ -208,9 +213,9 @@ public class Window {
         }
 
         Graphics2D g2 = finalFrame.createGraphics();
-        g2.setColor(Color.red);
-        g2.setStroke(new BasicStroke(10));
-        g2.drawRect(0, 0, finalFrame.getWidth(), finalFrame.getHeight());
+        // g2.setColor(Color.red);
+        // g2.setStroke(new BasicStroke(10));
+        // g2.drawRect(0, 0, finalFrame.getWidth(), finalFrame.getHeight());
 
 
         g.drawImage(finalFrame, null, 0, 0);
