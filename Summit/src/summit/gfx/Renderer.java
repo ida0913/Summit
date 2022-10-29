@@ -76,6 +76,9 @@ public class Renderer {
         //write final sprite
         for(int yy = ny; yy < ny+sprite.length; yy++) {
             for(int xx = nx; xx < nx+sprite[0].length; xx++) {
+                //fully transparent pixel
+                if(sprite[yy-ny][xx-nx] == -1)
+                    continue;
                 if(inArrBounds(yy-ny, xx-nx, sprite.length, sprite[0].length) && 
                     inArrBounds(yy, xx, frame.length, frame[0].length))
                     frame[yy][xx] = sprite[yy-ny][xx-nx];
@@ -171,10 +174,6 @@ public class Renderer {
         float ny = (y-cam.getY()-(HEIGHT/2))/(-16F);
 
         return new Point2D.Float(nx, ny); 
-    }
-
-    public static float toPixel(float n){
-        return n*16;
     }
 
     public static boolean onScreen(float x, float y, Camera cam){

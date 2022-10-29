@@ -17,10 +17,10 @@ public class Menu implements Paintable, Clickable{
     private List<MenuComponent> components;
     private Region region;
 
-    private final float REL_WIDTH;
-    private final float REL_HEIGHT;
-    private final float REL_X;
-    private final float REL_Y;
+    private float REL_WIDTH;
+    private float REL_HEIGHT;
+    private float REL_X;
+    private float REL_Y;
 
     public Menu(float relX, float relY, float relWidth, float relHeight){
         components = new ArrayList<>();
@@ -30,6 +30,10 @@ public class Menu implements Paintable, Clickable{
         REL_HEIGHT = relHeight;
         REL_X = relX;
         REL_Y = relY;
+    }
+
+    protected Menu(){
+        //use for subclasses
     }
 
     @Override
@@ -46,15 +50,15 @@ public class Menu implements Paintable, Clickable{
 
         Renderer ren = e.getRenderer();
 
-        //for centering on region coordinate
-        int xOffset = (int)((region.getWidth()%16)/2);
-        int yOffset = (int)((region.getHeight()%16)/2);
+        int rWidth = ((int)(region.getWidth()/16))*16;
+        int rHeight = ((int)(region.getHeight()/16))*16;
 
-        int startX = (int)(region.getX()-(region.getWidth()/2)) + xOffset;
-        int startY = (int)(region.getY()-(region.getHeight()/2)) + yOffset;
 
-        int endX = (int)(region.getX()+(region.getWidth()/2) - xOffset);
-        int endY = (int)(region.getY()+(region.getHeight()/2) - yOffset);
+        int startX = (int)(region.getX()-(rWidth/2));
+        int startY = (int)(region.getY()-(rHeight/2));
+
+        int endX = (int)(region.getX()+(rWidth/2));
+        int endY = (int)(region.getY()+(rHeight/2));
 
         //traversed in pixel coordinates
         for (int x = startX; x <= endX; x+=16) {
@@ -102,81 +106,21 @@ public class Menu implements Paintable, Clickable{
                 ren.render(Sprite.MENU_FILL, x, y, Renderer.FLIP_NONE);
             }
         }
-        
-        //blocks needed horizontally and veritcally to satisfy bounding region
-        
-//         Renderer ren = e.getRenderer();
 
-//         int v = (int)(region.getHeight()/16);
-//         int h = (int)(region.getWidth()/16);
+        //draw components
 
-//         System.out.println(v + "  " + h);
-
-// //        System.out.println(region);
-
-//         for(int y = 0; y < 1; y++){
-//             for(int x = 0; x < h; x++){
-
-//                 float py = region.getX()-((y-(v/2))*16);
-//                 float px = region.getY()-((x-(h/2))*16);
-
-//                 // System.out.println(px + "  " + py + "\n\n");
-                
-//                 //check corners
-//                 if(y == startY && x == startX){
-//                     System.out.println("hi1");
-//                     ren.render(Sprite.MENU_CORNER, px, py, Renderer.FLIP_NONE);
-//                     continue;
-//                 }
-//                 if(y == startY && x == h-1){
-//                     System.out.println("hi2");
-//                     ren.render(Sprite.MENU_CORNER, px, py, Renderer.FLIP_X);
-//                     continue;
-//                 }
-//                 if(y == v-1 && x == startX){
-//                     System.out.println("hi3");
-//                     ren.render(Sprite.MENU_CORNER, px, py, Renderer.FLIP_Y);
-//                     continue;
-//                 }
-//                 if(y == v-1 && x == h-1){
-//                     System.out.println("hi4");
-//                     ren.render(Sprite.MENU_CORNER, px, py, Renderer.FLIP_X | Renderer.FLIP_Y);
-//                     continue;
-//                 }
-//                 //------------
-
-//                 //check borders
-//                 if(y == startY){
-//                     System.out.println("hi5");
-//                     ren.render(Sprite.MENU_BORDER, px, py, Renderer.FLIP_NONE);
-//                     continue;
-//                 }
-//                 if(y == v-1){
-//                     System.out.println("hi6");
-//                     ren.render(Sprite.MENU_BORDER, px, py, Renderer.FLIP_Y);
-//                     continue;
-//                 }
-//                 if(x == startX){
-//                     System.out.println("hi7");
-//                     ren.render(Sprite.MENU_BORDER, px, py,  Renderer.ROTATE_90 | Renderer.FLIP_Y);
-//                     continue;
-//                 }
-//                 if(x == h-1){
-//                     System.out.println("hi8");
-//                     ren.render(Sprite.MENU_BORDER, px, py, Renderer.ROTATE_90);
-//                     continue;
-//                 }
-//                 //------------
-
-//                 //render inside
-//                 ren.render(Sprite.MENU_FILL, px, py, Renderer.FLIP_NONE);
-//             }   
-//         }
+        for (int i = 0; i < components.size(); i++) {
+            components.get(i).paint(e);
+        }
     }
 
     //--------------------------------------------------------------------
     //getters and setters
     //--------------------------------------------------------------------
+
+    public void addComponent(MenuComponent m){
+        components.add(m);
+    }
 
     public List<MenuComponent> getComponents() {
         return this.components;

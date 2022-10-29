@@ -36,7 +36,10 @@ public class GameWorld implements Paintable{
     }
 
     private void invokeGameUpdates(){
+        GameUpdateEvent gue = new GameUpdateEvent(loadedMap);
 
+        if(loadedMap != null)
+            loadedMap.update(gue);
     }
 
     @Override
